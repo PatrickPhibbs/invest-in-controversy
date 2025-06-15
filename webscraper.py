@@ -12,22 +12,7 @@ import google.generativeai as genai
 load_dotenv()  # This loads the .env file
 
 
-# Main function that runs everything
-def main():
-    # Get the text from the website
-    text = text_scraper()
-    
-    # Find sentences that contain negative words
-    sentences = find_negative_headings(text)
-    
-    # Write each sentence to a file
-    # with open('negative_sentences.txt', 'w', encoding='utf-8') as file:
-    #     for sentence in sentences:
-    #         file.write(sentence)
 
-    #Testing LLM with one heading
-    for i in range(1,len(sentences)-1):
-        print(research_involved_companies(sentences[i]))
 
     
 
