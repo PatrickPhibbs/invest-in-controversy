@@ -173,4 +173,3 @@ def research_involved_companies(headline):
 def parse_company_name():
     return
 # Run the main function
-main()

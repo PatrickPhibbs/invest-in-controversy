@@ -23,8 +23,13 @@ def main():
     #     for sentence in sentences:
     #         file.write(sentence)
     #Testing LLM with one heading
-    for i in range(1,len(sentences)-1):
-        print(webscraper.research_involved_companies(sentences[i]))
+    # for i in range(1,len(sentences)-1):
+    #     print(webscraper.research_involved_companies(sentences[i]))
 
-    automatedinvestor.invest()
+    this = webscraper.research_involved_companies(sentences[2])
+
+    automatedinvestor.invest(this)
+
+
+main()
     
