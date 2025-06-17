@@ -26,7 +26,7 @@ def main():
     # for i in range(1,len(sentences)-1):
     #     print(webscraper.research_involved_companies(sentences[i]))
 
-    this = webscraper.research_involved_companies(sentences[2])
+    this = webscraper.research_involved_companies(sentences[0])
 
     automatedinvestor.invest(this)
 
