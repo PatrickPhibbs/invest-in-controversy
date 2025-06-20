@@ -12,6 +12,7 @@ import yfinance as yf
 import alpaca_trade_api as tradeapi
 from datetime import datetime
 import yfinance as yf
+import json
 
 load_dotenv()  
 api = tradeapi.REST(
@@ -25,7 +26,10 @@ def invest(unparsed_tickers):
     account = api.get_account()
     parsed_tickers = parse_tickers_from_string(unparsed_tickers)
     #temporary function call just to calculate the past prices of 1 ticker
-    print('This is the price of '+parsed_tickers[len(parsed_tickers)-1]+': '+str(calculate_dip(parsed_tickers[len(parsed_tickers)-1])))
+    int = calculate_dip(parsed_tickers[len(parsed_tickers)-1])
+    print('This is the price of '+parsed_tickers[len(parsed_tickers)-1]+': '+str(int))
+
+    
     return
 
 def parse_tickers_from_string(text):
@@ -47,7 +51,7 @@ def calculate_dip(ticker):
 
     print('This is the price now: ' + str(current_price) + ' and this is the price three days ago: '+ str(get_price_yesterday(ticker)))
 
-    return 
+    return
 
 def get_price_yesterday(ticker):
     stock = yf.Ticker(ticker)
@@ -60,6 +64,8 @@ def get_price_yesterday(ticker):
     return None
 
 def buy_stock(ticker):
+    stock = yf.Ticker(ticker)
+    info = stock.info
     order = api.submit_order(
         symbol=ticker,
         qty=5,
@@ -67,10 +73,23 @@ def buy_stock(ticker):
         type='market',
         time_in_force='gtc'
     )
+    try:
+        with open("positions.json", "r") as f:
+            positions = json.load(f)
+    except FileNotFoundError:
+        positions = {}
+    positions[ticker] = {
+        "buy-price": info.get('currentPrice'),
+        "quantity": 5, 
+        "buy-date": str(datetime.now().date())
+    }
+    with open("positions.json","w") as f:
+        json.dump(positions,f)
     print(f'Buy order placed 5 shares of {ticker}')
-    return
+    return 
 
 def sell_stock():
+
     return
 
 
