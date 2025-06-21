@@ -28,7 +28,7 @@ def invest(unparsed_tickers):
     #temporary function call just to calculate the past prices of 1 ticker
     int = calculate_dip(parsed_tickers[len(parsed_tickers)-1])
     print('This is the price of '+parsed_tickers[len(parsed_tickers)-1]+': '+str(int))
-
+    sell_stock()
     
     return
 
@@ -89,6 +89,42 @@ def buy_stock(ticker):
     return 
 
 def sell_stock():
+    with open("positions.json", "r") as f:
+        positions = json.load(f)
+
+    stock_to_remove = []
+
+    for ticker in positions:
+        stock = yf.Ticker(ticker)
+        currentPrice = stock.info.get('currentPrice')
+        buy_price = positions[ticker]["buy-price"]
+        target_price = buy_price*1.10
+        
+        if currentPrice >= target_price:
+            quantity = positions[ticker]["quantity"]
+
+            order = api.submit_order(
+                symbol = ticker,
+                qty = quantity,
+                side = 'sell',
+                type = 'market',
+                time_in_force = 'gtc'
+            )
+
+            profit = (currentPrice - buy_price) * quantity
+            print(f'Sold {quantity} shares of {ticker} for a profit of {profit}')
+
+            stock_to_remove.append(ticker)
+
+    for ticker in stock_to_remove:
+        del positions[ticker]
+
+    with open("positions.json","w") as f:
+        json.dump(positions, f)
+
+    if not stock_to_remove:
+        print("No stocks ready to sell")
+
 
     return
 

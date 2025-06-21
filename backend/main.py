@@ -9,7 +9,7 @@ import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 import webscraper
-import automatedinvestor
+import Coinv.backend.automatedinvestor as automatedinvestor
 
 def main():
     # Get the text from the website
