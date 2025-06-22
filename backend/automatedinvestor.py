@@ -26,10 +26,14 @@ def invest(unparsed_tickers):
     account = api.get_account()
     parsed_tickers = parse_tickers_from_string(unparsed_tickers)
     #temporary function call just to calculate the past prices of 1 ticker
-    int = calculate_dip(parsed_tickers[len(parsed_tickers)-1])
-    print('This is the price of '+parsed_tickers[len(parsed_tickers)-1]+': '+str(int))
+    try:
+        for i in range(len(parsed_tickers)):
+            int = calculate_dip(parsed_tickers[i])
+            print('This is the price of '+parsed_tickers[i]+': '+str(int))
+    except IndexError:
+        print("No tickers in the list")
     sell_stock()
-    
+    portfolio_info()
     return
 
 def parse_tickers_from_string(text):
@@ -43,13 +47,16 @@ def calculate_dip(ticker):
     stock = yf.Ticker(ticker)
     info = stock.info
     current_price =  info.get('currentPrice')
-    if get_price_yesterday(ticker)!=None:
-        if (current_price <= (get_price_yesterday(ticker)*0.99)):
+    yesterday_price = get_price_yesterday(ticker)
+    if yesterday_price!=None and current_price!=None:
+        if (current_price <= (yesterday_price*0.95)):
             buy_stock(ticker)
         else:
             print(f'{ticker} not bought')
+    else:
+        print(f'{ticker} skipped - could not get yesterday\'s price')
 
-    print('This is the price now: ' + str(current_price) + ' and this is the price three days ago: '+ str(get_price_yesterday(ticker)))
+    print('This is the price now: ' + str(current_price) + ' and this is the price three days ago: '+ str(yesterday_price))
 
     return
 
@@ -125,6 +132,17 @@ def sell_stock():
     if not stock_to_remove:
         print("No stocks ready to sell")
 
+
+    return
+
+def portfolio_info():
+    account =  api.get_account()
+    portfolio = {
+        'portfolio-value': float(account.portfolio_value),
+        'pnl': float(float(account.portfolio_value)-100000),
+    }
+    with open('portfolio-info.json', 'w')as f:
+        json.dump(portfolio,f)
 
     return
 

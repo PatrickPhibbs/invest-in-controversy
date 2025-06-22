@@ -19,18 +19,43 @@ import {
   Zap,
 } from "lucide-react"
 
+
+interface PositionInfo{
+  'buy-price':number;
+  quantity:number;
+  'buy-date':string;
+}
+
+type Positions = {
+  [ticker:string]: PositionInfo;
+};
+
+interface AccountData {
+  'portfolio-value': number;
+  pnl: number;
+};
+
+import positionsData from '../../backend/positions.json';
+import accountData from '../../backend/portfolio-info.json';
+
+const positions : Positions = positionsData as Positions;
+const account : AccountData = accountData as AccountData;
+
 export default function TradingDashboard() {
   // Mock data
-  const portfolioValue = 125847.32
-  const dailyPnL = 2847.21
-  const dailyPnLPercent = 2.31
+  const portfolioValue = account['portfolio-value']
+  const dailyPnL = account.pnl
+  const dailyPnLPercent = (dailyPnL / portfolioValue) * 100;
 
-  const positions = [
-    { symbol: "AAPL", shares: 150, value: 28500, pnl: 1250, pnlPercent: 4.58 },
-    { symbol: "TSLA", shares: 75, value: 18750, pnl: -890, pnlPercent: -4.53 },
-    { symbol: "NVDA", shares: 50, value: 22500, pnl: 2100, pnlPercent: 10.29 },
-    { symbol: "META", shares: 100, value: 31200, pnl: 450, pnlPercent: 1.46 },
-  ]
+  const positionsArray = Object.entries(positions).map(([symbol,info]) => ({
+    symbol,
+    shares: info.quantity,
+    buyPrice: info['buy-price'],
+    buyDate: info['buy-date'],
+    value: info.quantity*info['buy-price'],
+    pnl:0,
+    pnlPercent:0
+  }));
 
   const newsActivity = [
     {
@@ -210,7 +235,7 @@ export default function TradingDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {positions.map((position, index) => (
+                  {positionsArray.map((position, index) => (
                     <div
                       key={index}
                       className="flex items-center justify-between p-3 border border-black/20 rounded-lg"

@@ -43,13 +43,12 @@ def text_scraper():
     page_text = html.find_all('h3')
     
     #Converts from html to a string before returning
-    text_content = ' '.join([h3.get_text(strip= True) for h3 in page_text])
-
+    headlines = [h3.get_text(strip=True) for h3 in page_text if h3.get_text(strip=True)]
     # Return the headlines (NOTE: This returns HTML elements, not text!)
-    return text_content
+    return headlines
 
 # Function to find headlines with negative/bad news words
-def find_negative_headings(text):
+def find_negative_headings(headlines):
     # List of words that indicate bad news or problems
     controversy_keywords = [
         # Direct controversy/scandal indicators
@@ -110,35 +109,34 @@ def find_negative_headings(text):
         "troubled"             # Having problems
     ]
     
-    # Try to split the text into sentences 
-    sentences = re.split(r'[.!?]+', text)
+    
     
     
     # List to store sentences that contain negative words
-    matching_sentences = []
+    matching_headlines = []
     
     # Look through each sentence
-    for sentence in sentences:
+    for headline in headlines:
         # Remove extra spaces (NOTE: This doesn't actually change the sentence!)
-        sentence.strip()
+        headline.strip()
         
         # Skip empty sentences
-        if not sentence:
+        if not headline:
             continue
             
         # Convert sentence to lowercase for easier matching
-        sentence_lower = sentence.lower()
+        headline_lower = headline.lower()
         
         # Check if any negative word is in this sentence
         for keyword in controversy_keywords:
-            if keyword in sentence_lower:
+            if keyword in headline_lower:
                 # Found a negative word! Add this sentence to our list
-                matching_sentences.append(sentence_lower)
+                matching_headlines.append(headline_lower)
                 # Stop looking for more keywords in this sentence
                 break
     
     # Return all the negative sentences we found
-    return matching_sentences
+    return matching_headlines
 
 def research_involved_companies(headline):
     # This prompts the gemini llm with the inputted headline in order to get a response in the form of a list of companies that may be negatively affected.
@@ -173,3 +171,5 @@ def research_involved_companies(headline):
 def parse_company_name():
     return
 # Run the main function
+
+

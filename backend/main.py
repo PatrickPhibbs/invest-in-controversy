@@ -9,7 +9,7 @@ import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 import webscraper
-import Coinv.backend.automatedinvestor as automatedinvestor
+import automatedinvestor as automatedinvestor
 
 def main():
     # Get the text from the website
@@ -25,10 +25,9 @@ def main():
     #Testing LLM with one heading
     # for i in range(1,len(sentences)-1):
     #     print(webscraper.research_involved_companies(sentences[i]))
-
-    this = webscraper.research_involved_companies(sentences[0])
-
-    automatedinvestor.invest(this)
+    for i in range(len(sentences)):
+        this = webscraper.research_involved_companies(sentences[i])
+        automatedinvestor.invest(this)
 
 
 main()
