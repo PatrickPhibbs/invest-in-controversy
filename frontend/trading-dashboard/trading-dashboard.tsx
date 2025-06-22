@@ -147,31 +147,9 @@ export default function TradingDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-yellow-400 text-black border-black">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center">
-                <Newspaper className="w-4 h-4 mr-2" />
-                News Signals
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">47</div>
-              <div className="text-sm text-black/80 mt-1">Today's triggers</div>
-            </CardContent>
-          </Card>
+          
 
-          <Card className="bg-yellow-400 text-black border-black">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center">
-                <Zap className="w-4 h-4 mr-2" />
-                Avg Response
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">1.2s</div>
-              <div className="text-sm text-green-400 mt-1">News to trade</div>
-            </CardContent>
-          </Card>
+        
         </div>
 
         {/* Main Content Grid */}
@@ -268,115 +246,11 @@ export default function TradingDashboard() {
 
           {/* Right Column - Risk Metrics & Algorithm Status */}
           <div className="space-y-4">
-            <Card className="bg-yellow-400 text-black border-black">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Shield className="w-5 h-5 mr-2" />
-                  Risk Metrics
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {riskMetrics.map((metric, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm text-black/80">{metric.label}</span>
-                    <div className="flex items-center space-x-2">
-                      <span className="font-semibold">{metric.value}</span>
-                      <div
-                        className={`w-2 h-2 rounded-full ${metric.status === "good"
-                            ? "bg-green-500"
-                            : metric.status === "moderate"
-                              ? "bg-yellow-500"
-                              : "bg-red-500"
-                          }`}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+            
 
-            <Card className="bg-yellow-400 text-black border-black">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <AlertTriangle className="w-5 h-5 mr-2" />
-                  Algorithm Health
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>API Status</span>
-                    <Badge className="bg-green-600">Online</Badge>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Data Feed</span>
-                    <Badge className="bg-green-600">Active</Badge>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>News Sources</span>
-                    <span>12/12</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Last Update</span>
-                    <span>2s ago</span>
-                  </div>
-                </div>
-                <Separator className="bg-black/20" />
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>False Positives</span>
-                    <span className="text-green-400">4.2%</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Missed Signals</span>
-                    <span className="text-yellow-400">1.8%</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Avg Trade Size</span>
-                    <span>$8,450</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            
 
-            <Card className="bg-yellow-400 text-black border-black">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Clock className="w-5 h-5 mr-2" />
-                  Top Controversies
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Regulatory Issues</span>
-                    <span>23%</span>
-                  </div>
-                  <Progress value={23} className="h-2" />
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Earnings Surprises</span>
-                    <span>31%</span>
-                  </div>
-                  <Progress value={31} className="h-2" />
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Legal Disputes</span>
-                    <span>18%</span>
-                  </div>
-                  <Progress value={18} className="h-2" />
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Product Issues</span>
-                    <span>28%</span>
-                  </div>
-                  <Progress value={28} className="h-2" />
-                </div>
-              </CardContent>
-            </Card>
+            
           </div>
         </div>
       </div>
