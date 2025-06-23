@@ -1,6 +1,6 @@
 # Import libraries we need
 import pandas as pd  # For data handling (not used in this code)
-import requests as rq  # For making web requests
+import httpx as rq
 from bs4 import BeautifulSoup as bs  # For parsing HTML
 import schedule  # For scheduling tasks (not used in this code)
 import time  # For adding delays
