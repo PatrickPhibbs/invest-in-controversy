@@ -10,13 +10,24 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 import webscraper
 import automatedinvestor as automatedinvestor
+import schedule
+import datetime
+import pytz
+
+
+
 
 def main():
     # Get the text from the website
+
+    tz = pytz.timezone("Europe/Dublin")
+    now = datetime.now(tz)
+
     text = webscraper.text_scraper()
     
     # Find sentences that contain negative words
     sentences = webscraper.find_negative_headings(text)
+    
     
     # Write each sentence to a file
     # with open('negative_sentences.txt', 'w', encoding='utf-8') as file:
@@ -29,6 +40,12 @@ def main():
         this = webscraper.research_involved_companies(sentences[i])
         automatedinvestor.invest(this)
 
+schedule.every().day.at("9:00").do(main)
+schedule.every().day.at("9:15").do(main)
 
-main()
+
+
+while True:
+    schedule.run_pending()
+    time.sleep(15)
     

@@ -35,8 +35,8 @@ interface AccountData {
   pnl: number;
 };
 
-import positionsData from '../../backend/positions.json';
-import accountData from '../../backend/portfolio-info.json';
+import positionsData from './data/positions.json';
+import accountData from './data/portfolio-info.json';
 
 const positions : Positions = positionsData as Positions;
 const account : AccountData = accountData as AccountData;
@@ -156,52 +156,6 @@ export default function TradingDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - News Activity Feed */}
           <div className="lg:col-span-2 space-y-4">
-            <Card className="bg-yellow-400 text-black border-black">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Activity className="w-5 h-5 mr-2" />
-                  Real-Time Activity Feed
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {newsActivity.map((item, index) => (
-                  <div key={index} className="border border-black/20 rounded-lg p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center space-x-2">
-                        <Badge
-                          variant={item.action === "BUY" ? "default" : "destructive"}
-                          className={item.action === "BUY" ? "bg-green-600" : "bg-red-600"}
-                        >
-                          {item.action}
-                        </Badge>
-                        <span className="font-semibold">{item.company}</span>
-                        <span className="text-sm text-black/60">{item.time}</span>
-                      </div>
-                      <Badge variant="outline" className="text-xs">
-                        {item.source}
-                      </Badge>
-                    </div>
-                    <div className="text-sm mb-2">
-                      <span className="text-black/80">Controversy:</span> {item.controversy}
-                    </div>
-                    <div className="text-sm mb-2">
-                      <span className="text-black/80">Reasoning:</span> {item.reasoning}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-xs text-black/60">Sentiment:</span>
-                        <div
-                          className={`text-xs px-2 py-1 rounded ${item.sentiment > 0 ? "bg-green-600" : "bg-red-600"}`}
-                        >
-                          {item.sentiment > 0 ? "+" : ""}
-                          {item.sentiment}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
 
             {/* Current Positions */}
             <Card className="bg-yellow-400 text-black border-black">

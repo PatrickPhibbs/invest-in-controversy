@@ -81,7 +81,7 @@ def buy_stock(ticker):
         time_in_force='gtc'
     )
     try:
-        with open("positions.json", "r") as f:
+        with open("../data/positions.json", "r") as f:
             positions = json.load(f)
     except FileNotFoundError:
         positions = {}
@@ -90,13 +90,13 @@ def buy_stock(ticker):
         "quantity": 5, 
         "buy-date": str(datetime.now().date())
     }
-    with open("positions.json","w") as f:
+    with open("../data/positions.json","w") as f:
         json.dump(positions,f)
     print(f'Buy order placed 5 shares of {ticker}')
     return 
 
 def sell_stock():
-    with open("positions.json", "r") as f:
+    with open("../data/positions.json", "r") as f:
         positions = json.load(f)
 
     stock_to_remove = []
@@ -126,7 +126,7 @@ def sell_stock():
     for ticker in stock_to_remove:
         del positions[ticker]
 
-    with open("positions.json","w") as f:
+    with open("../data/positions.json","w") as f:
         json.dump(positions, f)
 
     if not stock_to_remove:
@@ -141,7 +141,7 @@ def portfolio_info():
         'portfolio-value': float(account.portfolio_value),
         'pnl': float(float(account.portfolio_value)-100000),
     }
-    with open('portfolio-info.json', 'w')as f:
+    with open('../data/portfolio-info.json', 'w')as f:
         json.dump(portfolio,f)
 
     return
