@@ -35,8 +35,8 @@ interface AccountData {
   pnl: number;
 };
 
-import positionsData from './data/positions.json';
-import accountData from './data/portfolio-info.json';
+import positionsData from '../../Coinv/backend/data/positions.json';
+import accountData from '../../Coinv/backend/data/portfolio-info.json';
 
 const positions: Positions = positionsData as Positions;
 const account: AccountData = accountData as AccountData;
