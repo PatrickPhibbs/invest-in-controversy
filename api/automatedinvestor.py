@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup as bs  # For parsing HTML
 import schedule  # For scheduling tasks (not used in this code)
 import time  # For adding delays
 import re  # For text pattern matching
-import os
 from dotenv import load_dotenv
 import google.generativeai as genai
 import yfinance as yf
@@ -13,6 +12,7 @@ import alpaca_trade_api as tradeapi
 from datetime import datetime
 import yfinance as yf
 import json
+import os
 
 load_dotenv()  
 api = tradeapi.REST(

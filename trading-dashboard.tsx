@@ -20,14 +20,14 @@ import {
 } from "lucide-react"
 
 
-interface PositionInfo{
-  'buy-price':number;
-  quantity:number;
-  'buy-date':string;
+interface PositionInfo {
+  'buy-price': number;
+  quantity: number;
+  'buy-date': string;
 }
 
 type Positions = {
-  [ticker:string]: PositionInfo;
+  [ticker: string]: PositionInfo;
 };
 
 interface AccountData {
@@ -38,8 +38,8 @@ interface AccountData {
 import positionsData from './data/positions.json';
 import accountData from './data/portfolio-info.json';
 
-const positions : Positions = positionsData as Positions;
-const account : AccountData = accountData as AccountData;
+const positions: Positions = positionsData as Positions;
+const account: AccountData = accountData as AccountData;
 
 export default function TradingDashboard() {
   // Mock data
@@ -47,45 +47,45 @@ export default function TradingDashboard() {
   const dailyPnL = account.pnl
   const dailyPnLPercent = (dailyPnL / portfolioValue) * 100;
 
-  const positionsArray = Object.entries(positions).map(([symbol,info]) => ({
+  const positionsArray = Object.entries(positions).map(([symbol, info]) => ({
     symbol,
     shares: info.quantity,
     buyPrice: info['buy-price'],
     buyDate: info['buy-date'],
-    value: info.quantity*info['buy-price'],
-    pnl:0,
-    pnlPercent:0
+    value: info.quantity * info['buy-price'],
+    pnl: 0,
+    pnlPercent: 0
   }));
 
-  const newsActivity = [
-    {
-      time: "09:34 AM",
-      company: "Tesla Inc",
-      controversy: "Regulatory Investigation",
-      action: "SELL",
-      reasoning: "SEC investigation announced - high volatility expected",
-      sentiment: -0.78,
-      source: "Reuters",
-    },
-    {
-      time: "09:28 AM",
-      company: "Apple Inc",
-      controversy: "Product Recall",
-      action: "BUY",
-      reasoning: "Minor recall, market overreaction detected",
-      sentiment: -0.34,
-      source: "Bloomberg",
-    },
-    {
-      time: "09:15 AM",
-      company: "NVIDIA Corp",
-      controversy: "Earnings Beat",
-      action: "BUY",
-      reasoning: "Strong earnings, positive sentiment surge",
-      sentiment: 0.89,
-      source: "CNBC",
-    },
-  ]
+  // const newsActivity = [
+  //   {
+  //     time: "09:34 AM",
+  //     company: "Tesla Inc",
+  //     controversy: "Regulatory Investigation",
+  //     action: "SELL",
+  //     reasoning: "SEC investigation announced - high volatility expected",
+  //     sentiment: -0.78,
+  //     source: "Reuters",
+  //   },
+  //   {
+  //     time: "09:28 AM",
+  //     company: "Apple Inc",
+  //     controversy: "Product Recall",
+  //     action: "BUY",
+  //     reasoning: "Minor recall, market overreaction detected",
+  //     sentiment: -0.34,
+  //     source: "Bloomberg",
+  //   },
+  //   {
+  //     time: "09:15 AM",
+  //     company: "NVIDIA Corp",
+  //     controversy: "Earnings Beat",
+  //     action: "BUY",
+  //     reasoning: "Strong earnings, positive sentiment surge",
+  //     sentiment: 0.89,
+  //     source: "CNBC",
+  //   },
+  // ] ## Don't need any of this for now as news has been removed
 
   const riskMetrics = [
     { label: "Portfolio Beta", value: "1.23", status: "moderate" },
@@ -147,9 +147,9 @@ export default function TradingDashboard() {
             </CardContent>
           </Card>
 
-          
 
-        
+
+
         </div>
 
         {/* Main Content Grid */}
@@ -200,11 +200,11 @@ export default function TradingDashboard() {
 
           {/* Right Column - Risk Metrics & Algorithm Status */}
           <div className="space-y-4">
-            
 
-            
 
-            
+
+
+
           </div>
         </div>
       </div>
