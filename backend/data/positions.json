@@ -1,1 +1,22 @@
-{"BTCM": {"buy-price": 1.95, "quantity": 5, "buy-date": "2025-06-22"}, "BTCS": {"buy-price": 2.26, "quantity": 5, "buy-date": "2025-06-22"}, "AMZN": {"buy-price": 209.69, "quantity": 5, "buy-date": "2025-06-23"}}
+{
+  "BTCM": {
+    "buy-price": 1.95,
+    "quantity": 5,
+    "buy-date": "2025-06-22"
+  },
+  "BTCS": {
+    "buy-price": 2.26,
+    "quantity": 5,
+    "buy-date": "2025-06-22"
+  },
+  "AMZN": {
+    "buy-price": 209.69,
+    "quantity": 5,
+    "buy-date": "2025-06-23"
+  },
+  "GETY": {
+    "buy-price": 1.72,
+    "quantity": 5,
+    "buy-date": "2025-06-25"
+  }
+}
