@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
+import { useState, useEffect } from "react"
 import {
   TrendingUp,
   TrendingDown,
@@ -35,26 +36,88 @@ interface AccountData {
   pnl: number;
 };
 
-import positionsData from '../../Coinv/backend/data/positions.json';
-import accountData from '../../Coinv/backend/data/portfolio-info.json';
-
-const positions: Positions = positionsData as Positions;
-const account: AccountData = accountData as AccountData;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://invest-in-controversy.onrender.com';
 
 export default function TradingDashboard() {
+  const [positions, setPositions] = useState<Positions>({});
+  const [account, setAccount] = useState<AccountData>({ "portfolio-value": 0, pnl: 0 });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // ADD THIS USEEFFECT HOOK
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch positions data from your FastAPI backend
+        const positionsUrl = `${BACKEND_URL}/positions`;
+        console.log('Fetching positions from URL:', positionsUrl);
+        const positionsResponse = await fetch(`${BACKEND_URL}/positions`);
+        if (!positionsResponse.ok) {
+          throw new Error(`Failed to fetch positions: ${positionsResponse.statusText}`);
+        }
+        const positionsData = await positionsResponse.json();
+
+        // Fetch account data from your FastAPI backend
+        const accountResponse = await fetch(`${BACKEND_URL}/portfolio-info`);
+        if (!accountResponse.ok) {
+          throw new Error(`Failed to fetch portfolio info: ${accountResponse.statusText}`);
+        }
+        const accountData = await accountResponse.json();
+
+        setPositions(positionsData);
+        setAccount(accountData);
+        setError(null);
+        console.log('Data fetched successfully:', { positionsData, accountData });
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        console.error('Error fetching data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    // Optional: Refresh data every 30 seconds
+    const interval = setInterval(fetchData, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // ADD THIS LOADING STATE HANDLER
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black p-4 flex items-center justify-center">
+        <div className="text-yellow-400 text-xl">Loading portfolio data...</div>
+      </div>
+    );
+  }
+
+  // ADD THIS ERROR STATE HANDLER
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black p-4 flex items-center justify-center">
+        <div className="text-red-400 text-xl">Error: {error}</div>
+      </div>
+    );
+  }
+
   // Mock data
   const portfolioValue = account['portfolio-value']
   const dailyPnL = account.pnl
-  const dailyPnLPercent = (dailyPnL / portfolioValue) * 100;
+  const dailyPnLPercent = portfolioValue > 0 ? (dailyPnL / portfolioValue) * 100 : 0;
 
+  // Transform positions data for display
   const positionsArray = Object.entries(positions).map(([symbol, info]) => ({
     symbol,
     shares: info.quantity,
     buyPrice: info['buy-price'],
     buyDate: info['buy-date'],
     value: info.quantity * info['buy-price'],
-    pnl: 0,
-    pnlPercent: 0
+    pnl: 0, // TODO: Calculate current P&L when current prices are available
+    pnlPercent: 0 // TODO: Calculate P&L percentage when current prices are available
   }));
 
   // const newsActivity = [
