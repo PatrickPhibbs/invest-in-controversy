@@ -66,7 +66,7 @@ def run_scheduler():
     
     # Schedule the tasks
     schedule.every().day.at("09:00").do(main_trading_logic)
-    schedule.every().day.at("9:15").do(main_trading_logic)
+    schedule.every().day.at("09:15").do(main_trading_logic)
     
     scheduler_running = True
     print("Scheduler started - tasks scheduled for 9:00 AM and 9:15 AM Dublin time")
