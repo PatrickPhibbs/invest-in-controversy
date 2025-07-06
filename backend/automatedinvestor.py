@@ -30,6 +30,9 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 # Ensure data directory exists
 os.makedirs(DATA_DIR, exist_ok=True)
 
+# API endpoint for your server
+API_BASE_URL = "https://invest-in-controversy.onrender.com"
+
 def invest(unparsed_tickers):
     account = api.get_account()
     parsed_tickers = parse_tickers_from_string(unparsed_tickers)
@@ -102,12 +105,13 @@ def buy_stock(ticker):
             time_in_force='gtc'
         )
         
-        # Load existing positions
-        positions_file = os.path.join(DATA_DIR, "positions.json")
+        # Load existing positions from API
         try:
-            with open(positions_file, "r") as f:
-                positions = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
+            response = rq.get(f"{API_BASE_URL}/positions")
+            positions = response.json()
+            if 'error' in positions:  # If file doesn't exist on server
+                positions = {}
+        except:
             positions = {}
         
         # Add new position
@@ -117,11 +121,12 @@ def buy_stock(ticker):
             "buy-date": str(datetime.now().date())
         }
         
-        # Save positions
-        with open(positions_file, "w") as f:
-            json.dump(positions, f, indent=2)
-        
-        print(f'Buy order placed 5 shares of {ticker}')
+        # Send to API
+        try:
+            rq.post(f"{API_BASE_URL}/positions", json=positions)
+            print(f'Buy order placed 5 shares of {ticker}')
+        except Exception as e:
+            print(f"Error sending to API: {e}")
         
     except Exception as e:
         print(f"Error buying stock {ticker}: {e}")
@@ -130,14 +135,17 @@ def buy_stock(ticker):
 
 def sell_stock():
     try:
-        positions_file = os.path.join(DATA_DIR, "positions.json")
-        
-        # Load positions
+        # Load positions from API
         try:
-            with open(positions_file, "r") as f:
-                positions = json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
-            print("No positions file found or file is empty")
+            response = rq.get(f"{API_BASE_URL}/positions")
+            positions = response.json()
+            if 'error' in positions:  # If file doesn't exist on server
+                positions = {}
+        except:
+            positions = {}
+
+        if not positions:
+            print("No positions found")
             return
 
         stock_to_remove = []
@@ -172,9 +180,11 @@ def sell_stock():
         for ticker in stock_to_remove:
             del positions[ticker]
 
-        # Save updated positions
-        with open(positions_file, "w") as f:
-            json.dump(positions, f, indent=2)
+        # Send updated positions to API
+        try:
+            rq.post(f"{API_BASE_URL}/positions", json=positions)
+        except Exception as e:
+            print(f"Error sending to API: {e}")
 
         if not stock_to_remove:
             print("No stocks ready to sell")
@@ -192,11 +202,12 @@ def portfolio_info():
             'pnl': float(float(account.portfolio_value) - 100000),
         }
         
-        portfolio_file = os.path.join(DATA_DIR, 'portfolio-info.json')
-        with open(portfolio_file, 'w') as f:
-            json.dump(portfolio, f, indent=2)
-            
-        print(f"Portfolio value: ${portfolio['portfolio-value']}")
+        # Send to API
+        try:
+            rq.post(f"{API_BASE_URL}/portfolio", json=portfolio)
+            print(f"Portfolio value: ${portfolio['portfolio-value']}")
+        except Exception as e:
+            print(f"Error sending portfolio to API: {e}")
         
     except Exception as e:
         print(f"Error getting portfolio info: {e}")

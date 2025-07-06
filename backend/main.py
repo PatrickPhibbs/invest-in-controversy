@@ -14,6 +14,7 @@ import schedule
 import datetime
 import pytz
 import threading
+import json
 from fastapi import FastAPI, BackgroundTasks
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -127,6 +128,28 @@ def get_status():
             "9:15 Dublin time"
         ]
     }
+
+@app.post('/positions')
+def update_positions(positions: dict):
+    """Update positions data"""
+    try:
+        path = os.path.join(DATA_DIR, "positions.json")
+        with open(path, 'w') as f:
+            json.dump(positions, f, indent=2)
+        return {"message": "Positions updated successfully"}
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.post('/portfolio')
+def update_portfolio(portfolio: dict):
+    """Update portfolio data"""
+    try:
+        path = os.path.join(DATA_DIR, "portfolio-info.json")
+        with open(path, 'w') as f:
+            json.dump(portfolio, f, indent=2)
+        return {"message": "Portfolio updated successfully"}
+    except Exception as e:
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     import uvicorn
